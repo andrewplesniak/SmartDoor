@@ -1,5 +1,5 @@
 ##Andrew Plesniak
-##2/15/18
+##2/15/19
 ##This program controls a 270 degree, 333Hz servo motor based on Keyboard input
 
 import smbus
@@ -14,7 +14,7 @@ def main(stdscr):
     addr = 0x40
     minvalue1 = 682 #values were found via experimentation based on rotational limits
     maxvalue1 = 3409 #roughly equiv to 0.5ms to 2.5ms
-    stepsize = 3    #increase to increase speed
+    stepsize = 10    #increase to increase speed
 
     ##Setup and Config
     bus.write_byte_data(addr, 0, 0x20) #enable the chip
