@@ -3,6 +3,7 @@
 
 # import the necessary packages
 from imutils.video import VideoStream
+from imutils.video import FPS
 import numpy as np
 import argparse
 import imutils
@@ -33,10 +34,13 @@ else:
 # and initialize the total number of example faces written to disk
 # thus far
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
-# vs = VideoStream(usePiCamera=True).start()
+#vs = VideoStream(src=0).start()
+vs = VideoStream(usePiCamera=True).start()
 time.sleep(2.0)
 total = 0
+
+# start the FPS counter
+fps = FPS().start()
 
 # loop over the frames from the video stream
 while True:
@@ -108,9 +112,18 @@ while True:
 	# if the `q` key was pressed, break from the loop
 	elif key == ord("q"):
 		break
+		
+	# update the FPS counter
+	fps.update()
+	
+# stop the timer and display FPS information
+fps.stop()
+print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 # do a bit of cleanup
 print("[INFO] {} face images stored".format(total))
 print("[INFO] cleaning up...")
+
 cv2.destroyAllWindows()
 vs.stop()

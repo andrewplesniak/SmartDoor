@@ -27,8 +27,9 @@ detector = cv2.CascadeClassifier(args["cascade"])
 
 # initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
-# vs = VideoStream(usePiCamera=True).start()
+#vs = VideoStream(src=0).start()
+#vs = VideoStream(usePiCamera=True).start()
+vs = VideoStream(usePiCamera=True, resolution = (1080,720)).start()
 time.sleep(2.0)
 
 # start the FPS counter
@@ -48,7 +49,7 @@ while True:
 
 	# detect faces in the grayscale frame
 	rects = detector.detectMultiScale(gray, scaleFactor=1.1, 
-		minNeighbors=5, minSize=(30, 30),
+		minNeighbors=5, minSize=(20,20),
 		flags=cv2.CASCADE_SCALE_IMAGE)
 
 	# OpenCV returns bounding box coordinates in (x, y, w, h) order
