@@ -25,12 +25,12 @@ class door ():
 		bus.write_byte_data(self.addr, 0x06, 0) #ch0 start time = 0s
 		bus.write_word_data(self.addr, 0x08, self.state) #writes to the stop address of Ch0   
 
-	def unlock:
+	def unlock():
 		self.state = self.unlocked
 		bus.write_byte_data(self.addr, 0x06, 0) #ch0 start time = 0s
 		bus.write_word_data(self.addr, 0x08, self.state) #writes to the stop address of Ch0   
 
-	def lock:
+	def lock():
 		self.state = self.locked
 		bus.write_byte_data(self.addr, 0x06, 0) #ch0 start time = 0s
 		bus.write_word_data(self.addr, 0x08, self.state) #writes to the stop address of Ch0   
