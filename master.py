@@ -1,6 +1,3 @@
-# USAGE
-# python pi_face_recognition.py --cascade haarcascade_frontalface_default.xml --encodings encodings.pickle
-
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
@@ -10,10 +7,12 @@ import imutils
 import pickle
 import time
 import cv2
-import curses
+
+import doorControl
 
 
-def main(stdscr):
+
+def main():
 	# load the known faces and embeddings along with OpenCV's Haar
 	# cascade for face detection
 	print("[INFO] loading encodings + face detector...")
@@ -22,11 +21,20 @@ def main(stdscr):
 
 	# initialize the video stream and allow the camera sensor to warm up
 	print("[INFO] starting video stream...")
-	vs = VideoStream(src=0).start()
-	#vs = VideoStream(usePiCamera=True, resolution = (720,480)).start()
+	global vs
+	#vs = VideoStream(src=0).start()
+	vs = VideoStream(usePiCamera=True, resolution = (720,480)).start()
 	time.sleep(2.0)
 
+	#intialize message variables and the door object
+	message = "No People Detected"
+	prevmessage = "No People Detected"
+	global door
+	door = doorControl.door()
+	door.lock()
+	
 	# start the FPS counter
+	global fps
 	fps = FPS().start()
 
 	# loop over frames from the video file stream
@@ -56,46 +64,64 @@ def main(stdscr):
 		names = []
 
 		# loop over the facial embeddings
-		for encoding in encodings:
-			# attempt to match each face in the input image to our known
-			# encodings
-			matches = face_recognition.compare_faces(data["encodings"],
-				encoding)
-			name = "Unknown"
+		if encodings:
+			for encoding in encodings:
+				# attempt to match each face in the input image to our known
+				# encodings
+				matches = face_recognition.compare_faces(data["encodings"],
+					encoding)
+				name = "Unknown"
 
-			# check to see if we have found a match
-			if True in matches:
-				# find the indexes of all matched faces then initialize a
-				# dictionary to count the total number of times each face
-				# was matched
-				matchedIdxs = [i for (i, b) in enumerate(matches) if b]
-				counts = {}
+				# check to see if we have found a match
+				if True in matches:
+					# find the indexes of all matched faces then initialize a
+					# dictionary to count the total number of times each face
+					# was matched
+					matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+					counts = {}
 
-				# loop over the matched indexes and maintain a count for
-				# each recognized face face
-				for i in matchedIdxs:
-					name = data["names"][i]
-					counts[name] = counts.get(name, 0) + 1
+					# loop over the matched indexes and maintain a count for
+					# each recognized face face
+					for i in matchedIdxs:
+						name = data["names"][i]
+						counts[name] = counts.get(name, 0) + 1
 
-				# determine the recognized face with the largest number
-				# of votes (note: in the event of an unlikely tie Python
-				# will select first entry in the dictionary)
-				name = max(counts, key=counts.get)
-			
-			# update the list of names
-			names.append(name)
+					# determine the recognized face with the largest number
+					# of votes (note: in the event of an unlikely tie Python
+					# will select first entry in the dictionary)
+					name = max(counts, key=counts.get)
 
-			if name == "Unknown":
-				print("No Authorized User Detected")
-
+				# update the list of names
+				names.append(name)
+				
+			if names[0] == "Unknown" and len(names) == 1:
+				prevmessage = message
+				message = "An Unknown Person is Detected"
 			else:
-				print("Welcome",names)
+				prevmessage = message
+				message = "Welcome " + ', '.join(names)
+		else:
+			prevmessage = message
+			message = "No People Detected"
+
+		#Detects a change in state
+		if message != prevmessage:
+			print(message)
+			if message == "No People Detected": 
+				#lock door
+				door.lock()
+			elif message == "An Unknown Person is Detected":
+				#lock door and save a picture of the unknown person
+				door.lock()
+			else:
+				#unlock door
+				door.unlock
 
 		# update the FPS counter
 		fps.update()
 
 try:
-    curses.wrapper(main)
+    main()
     
 except KeyboardInterrupt:
 	print('User Ended Program')
@@ -106,5 +132,6 @@ except KeyboardInterrupt:
 	print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 	# do a bit of cleanup
+	door.unlock()
 	cv2.destroyAllWindows()
 	vs.stop()
