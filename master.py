@@ -115,7 +115,7 @@ def main():
 				door.lock()
 			else:
 				#unlock door
-				door.unlock
+				door.unlock()
 
 		# update the FPS counter
 		fps.update()
@@ -133,5 +133,6 @@ except KeyboardInterrupt:
 
 	# do a bit of cleanup
 	door.unlock()
+	door.shutdown()
 	cv2.destroyAllWindows()
 	vs.stop()

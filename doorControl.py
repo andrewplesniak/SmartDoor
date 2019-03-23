@@ -35,5 +35,11 @@ class door:
 		self.bus.write_byte_data(self.addr, 0x06, 0) #ch0 start time = 0s
 		self.bus.write_word_data(self.addr, 0x08, self.state) #writes to the stop address of Ch0   
 
+	def shutdown(self):
+		self.bus.write_byte_data(self.addr, 0x06, 0) #ch0 start time = 0s
+		self.bus.write_word_data(self.addr, 0x08, 0) #writes to the stop address of Ch0
+		self.bus.write_word_data(self.addr, 0x09, 0x10) #orderly shutdown of channel 0
+		self.bus.write_byte_data(self.addr, 0, 0x10) #puts the chip to sleep
+
 
 
