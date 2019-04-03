@@ -67,9 +67,9 @@ def main():
 		if encodings:
 			for encoding in encodings:
 				# attempt to match each face in the input image to our known
-				# encodings
+				# encodings default tolerance is 0.6, lower is more accurate
 				matches = face_recognition.compare_faces(data["encodings"],
-					encoding)
+					encoding, tolerance=0.5) 
 				name = "Unknown"
 
 				# check to see if we have found a match
@@ -96,7 +96,7 @@ def main():
 				
 			if names[0] == "Unknown" and (x == names[0] for x in names):
 				prevmessage = message
-				message = "An Unknown Person is Detected"
+				message = len(names)+" Unknown Person/People are Detected"
 			else:
 				prevmessage = message
 				message = "Welcome " + ', '.join(names)
