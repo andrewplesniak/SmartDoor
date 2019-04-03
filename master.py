@@ -96,7 +96,7 @@ def main():
 				
 			if names[0] == "Unknown" and (x == names[0] for x in names):
 				prevmessage = message
-				message = len(names)+" Unknown Person/People are Detected"
+				message = "An Unknown Person is Detected"
 			else:
 				prevmessage = message
 				message = "Welcome " + ', '.join(names)
