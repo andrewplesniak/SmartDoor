@@ -94,7 +94,7 @@ def main():
 				# update the list of names
 				names.append(name)
 				
-			if names[0] == "Unknown" and len(names) == 1:
+			if names[0] == "Unknown" and (x == names[0] for x in names):
 				prevmessage = message
 				message = "An Unknown Person is Detected"
 			else:
