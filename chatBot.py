@@ -1,3 +1,5 @@
+# Achieve control GPIO when you send msg to a WeChat bot.
+
 import itchat
 import led
 

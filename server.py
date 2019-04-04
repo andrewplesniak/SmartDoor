@@ -1,3 +1,5 @@
+# Control door lock by sending request to a flask http server running on pi
+
 import time
 import logging
 import flask

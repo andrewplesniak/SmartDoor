@@ -1,3 +1,5 @@
+# Use led demo to indicate lock & unlock
+
 import RPi.GPIO as GPIO
 import time
 
@@ -12,8 +14,13 @@ def openLed():
     setup()
     GPIO.output(5, 1)
     GPIO.output(3, 0)
-    time.sleep(5)
-    GPIO.cleanup()
-
+    #time.sleep(5)
+    #GPIO.cleanup()
+    
+def offLed():
+    setup()
+    GPIO.output(5, 0)
+    GPIO.output(3, 0)
+    
 if __name__ == "__main__":
     openLed()
