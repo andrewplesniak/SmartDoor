@@ -46,17 +46,17 @@ def checkFBstatus():
         else:
             doorControl.door().lock()
 
-# Demo: Loop to check status until program being killed
-while(True):
-    # Get current status
-    states = db.child("FrontDoor").get()
+# # Demo: Loop to check status until program being killed
+# while(True):
+#     # Get current status
+#     states = db.child("FrontDoor").get()
 
-    for user in states.each():
-        if(user.val() == "unlocked"):
-            doorControl.door().unlock()
-            #led.openLed()
-            continue
-        else:
-            doorControl.door().lock()
-            #led.offLed()
-            continue
+#     for user in states.each():
+#         if(user.val() == "unlocked"):
+#             doorControl.door().unlock()
+#             #led.openLed()
+#             continue
+#         else:
+#             doorControl.door().lock()
+#             #led.offLed()
+#             continue

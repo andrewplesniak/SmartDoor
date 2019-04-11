@@ -11,7 +11,7 @@ import cv2
 import doorControl
 
 import upload_image_to_FB
-import keypad_demo
+#import keypad_demo
 import door_control_by_firebase
 
 def main():
