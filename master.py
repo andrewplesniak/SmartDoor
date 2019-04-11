@@ -118,9 +118,9 @@ def main():
 				door_control_by_firebase.checkFBstatus()
 			elif message == "An Unknown Person is Detected":
 				#lock door and save a picture of the unknown person
-                                upload_image_to_FB.saveImg()
-                                upload_image_to_FB.uploadImg()
-                                #check keypad input once
+                upload_image_to_FB.saveImg()
+                upload_image_to_FB.uploadImg()
+                #check keypad input once
 				keypad_demo.checkpassword()
 				#check firebase status once
 				door_control_by_firebase.checkFBstatus()
