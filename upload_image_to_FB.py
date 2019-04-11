@@ -9,7 +9,7 @@ def saveImg():
     camera = PiCamera()
     camera.start_preview()
     time.sleep(2)
-    camera.capture('/home/pi/SmartDoor/image.jpg')
+    camera.capture('/home/pi/Documents/SmartDoor/image.jpg')
     camera.stop_preview()
     camera.close()
     

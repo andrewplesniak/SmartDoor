@@ -113,7 +113,7 @@ def main():
 				#lock door
 				door.lock()
 				#check keypad input once
-				keypad_demo.checkpassword()
+				#keypad_demo.checkpassword()
 				#check firebase status once
 				door_control_by_firebase.checkFBstatus()
 			elif message == "An Unknown Person is Detected":
@@ -121,7 +121,7 @@ def main():
 				upload_image_to_FB.saveImg()
 				upload_image_to_FB.uploadImg()
 				#check keypad input once
-				keypad_demo.checkpassword()
+				#keypad_demo.checkpassword()
 				#check firebase status once
 				door_control_by_firebase.checkFBstatus()
 			else:
