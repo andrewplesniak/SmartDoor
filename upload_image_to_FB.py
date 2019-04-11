@@ -21,7 +21,7 @@ def uploadImg():
         "authDomain": "smartdoor-f5862.firebaseapp.com",
         "databaseURL": "https://smartdoor-f5862.firebaseio.com",
         "storageBucket": "smartdoor-f5862.appspot.com",
-        "serviceAccount": "/home/pi/SmartDoor/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
+        "serviceAccount": "/home/pi/Documents/SmartDoor/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
         }
 
     firebase = pyrebase.initialize_app(config)
