@@ -10,7 +10,9 @@ import cv2
 
 import doorControl
 
-
+import upload_image_to_FB
+import keypad_demo
+import door_control_by_firebase
 
 def main():
 	# load the known faces and embeddings along with OpenCV's Haar
@@ -110,12 +112,23 @@ def main():
 			if message == "No People Detected": 
 				#lock door
 				door.lock()
+				#check keypad input once
+				keypad_demo.checkpassword()
+				#check firebase status once
+				door_control_by_firebase.checkFBstatus()
 			elif message == "An Unknown Person is Detected":
 				#lock door and save a picture of the unknown person
-				door.lock()
+                                upload_image_to_FB.saveImg()
+                                upload_image_to_FB.uploadImg()
+                                #check keypad input once
+				keypad_demo.checkpassword()
+				#check firebase status once
+				door_control_by_firebase.checkFBstatus()
 			else:
 				#unlock door
 				door.unlock()
+				time.sleep(10)
+				door.lock()
 
 		# update the FPS counter
 		fps.update()

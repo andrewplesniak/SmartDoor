@@ -1,6 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
+import doorControl
+
 GPIO.setmode(GPIO.BOARD)
 def checkkeypad(length):
     MATRIX = [[1,2,3,'A'],
@@ -31,15 +33,22 @@ def checkkeypad(length):
             GPIO.output(COL[j], 1)
             if len(result) >= length:
                 return result
+def checkpassword():
+    password = [1,2,3,'A']
+    length = len(password)
+    print("Please enter password:")
+    result = checkkeypad(length)
+    if result == password:
+        doorControl.door().unlock()
+        print("Door Unlocked")
+        time.sleep(10)
+        doorControl.door().lock()
+        print("Door ReLocked")
+    else:
+        doorControl.door().lock()
+        print("Password failed")
 try:
     while(True):
-        password = [1,2,3,'A']
-        length = len(password)
-        print("Please enter password:")
-        result = checkkeypad(length)
-        if result == password:
-            print("Door Unlocked")
-        else:
-            print("Password failed")
+        checkpassword()
 except KeyboardInterrupt:
     GPIO.cleanup()
