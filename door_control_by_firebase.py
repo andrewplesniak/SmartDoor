@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import time
 import doorControl
 import pyrebase
-#import led
+
 
 
 
@@ -15,7 +15,7 @@ config = {
     "authDomain": "smartdoor-f5862.firebaseapp.com",
     "databaseURL": "https://smartdoor-f5862.firebaseio.com",
     "storageBucket": "smartdoor-f5862.appspot.com",
-    "serviceAccount": "/home/pi/Documents/SmartDoor/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
+    "serviceAccount": "/home/pi/Documents/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
     }
 firebase = pyrebase.initialize_app(config)
 
@@ -26,12 +26,14 @@ db = firebase.database()
 GPIO.setwarnings(False)
 
 def checkFBstatus():
+    doorControl.door().lock()
+    
     config = {
     "apiKey": "AIzaSyDH_J9AF-YES_nlB8NQxCs78fkz-GqSzQk",
     "authDomain": "smartdoor-f5862.firebaseapp.com",
     "databaseURL": "https://smartdoor-f5862.firebaseio.com",
     "storageBucket": "smartdoor-f5862.appspot.com",
-    "serviceAccount": "/home/pi/Documents/SmartDoor/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
+    "serviceAccount": "/home/pi/Documents/smartdoor-f5862-firebase-adminsdk-fg4g8-71b2f73eb4.json"
     }
     firebase = pyrebase.initialize_app(config)
 
@@ -46,17 +48,11 @@ def checkFBstatus():
         else:
             doorControl.door().lock()
 
-# # Demo: Loop to check status until program being killed
-# while(True):
-#     # Get current status
-#     states = db.child("FrontDoor").get()
 
-#     for user in states.each():
-#         if(user.val() == "unlocked"):
-#             doorControl.door().unlock()
-#             #led.openLed()
-#             continue
-#         else:
-#             doorControl.door().lock()
-#             #led.offLed()
-#             continue
+try:
+    while(True):
+        checkFBstatus()
+        continue
+except KeyboardInterrupt:
+    doorControl.door().unlock()
+    doorControl.door().shutdown()
